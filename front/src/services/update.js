@@ -10,3 +10,19 @@ export const updateData = async (id, data) => {
     throw new Error(`Error updating data ${error.message}`);
   }
 };
+
+export const updateCategory = async (id, data) => {
+  try {
+    const userToken = getDefaultToken();
+    const resp = await axios.put(`${API_URL}/api/categories/${id}`, data,
+    {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error updating data ${error.message}`);
+  }
+};
+

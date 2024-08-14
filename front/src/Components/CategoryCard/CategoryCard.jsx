@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import { getAllCategories } from "../../services/get";
 import { deleteCategory } from "../../services/delete";
 import { toast } from "react-toastify";
+import { updateCategory } from "../../services/update";
 
 function CategoryCard({ category, setUpdate }) {
   const { title, id } = category;
@@ -90,6 +91,8 @@ function CategoryCard({ category, setUpdate }) {
         setUpdate((prev) => !prev);
         setEditName(false);
         toast.success('Category name updated successfully');
+        const categories = await getAllCategories();
+        setExistingCategories(categories);
       }
     } catch (error) {
       console.error('Error updating title:', error.message);
