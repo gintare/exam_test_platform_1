@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/login", "/", "/error", "/test", "/api/categories/**").permitAll()
+                        .requestMatchers("/register", "/login", "/", "/error", "/test", "/api/categories/**", "/api/books/**").permitAll()
 //                        .requestMatchers("/pets/**").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

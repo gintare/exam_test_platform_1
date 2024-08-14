@@ -13,6 +13,7 @@ nav {
   background-color: var(--dark-salmon);
   padding: 0.2rem;
   border-radius: 0.3rem;
+  z-index: 1 !important;
 }
 
 .logout {

@@ -26,3 +26,17 @@ export const updateCategory = async (id, data) => {
   }
 };
 
+export const updateBook = async (category_id, id, data) => {
+  try {
+    const userToken = getDefaultToken();
+    const resp = await axios.put(`${API_URL}/api/categories/${category_id}/books/${id}`, data,
+    {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error updating data ${error.message}`);
+  }
+};
