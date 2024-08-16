@@ -40,8 +40,8 @@ public class Book {
 //    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
 //    Set<Favorite> favorites = new LinkedHashSet<>();
 //
-//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-//    Set<Comment> comments = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Comment> comments = new LinkedHashSet<>();
 //
 //    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
 //    Set<Stars> stars = new LinkedHashSet<>();
