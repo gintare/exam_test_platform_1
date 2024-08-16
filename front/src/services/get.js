@@ -50,3 +50,14 @@ export const getOneBook = async (id) => {
     throw new Error(`Error fetching all data: ${error.message}`);
   }
 };
+
+export const getBooksByCategories = async (category_id) => {
+  try {
+    const userToken = getDefaultToken();
+    const resp = await axios.get(`${API_URL}/api/categories/${category_id}/books`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all data: ${error.message}`);
+  }
+};
+

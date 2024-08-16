@@ -29,6 +29,7 @@ function BooksPage() {
         }
       };
       getBooks();
+      console.log(books, "boooooooooks")
     }, [page, setUpdate])
 
 

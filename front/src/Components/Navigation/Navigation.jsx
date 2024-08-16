@@ -7,6 +7,8 @@ import "./Navigation.css";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../Context/UserContext/UserContext";
 import BooksContext from "../../Context/BooksContext/BooksContext";
+import CategoriesContext from "../../Context/CategoriesContext/CategoriesContext";
+import { getAllBooks, getAllCategories, getBooksByCategories } from "../../services/get";
 
 const Navigation = () => {
   const [searchText, setSearchText] = useState("");
@@ -19,8 +21,9 @@ const Navigation = () => {
   //const userName = isLoggedIn ? getUserNameFromToken(token) : null;
   const userContextOutput = useContext(UserContext);
   //console.log(userContextOutput, "boooooo");
-  const { isLoggedIn, userName, role : userRole } = userContextOutput;
+  const { isLoggedIn, userName, role: userRole } = userContextOutput;
   //console.log("role = "+role);
+  const { categories, setCategories } = useContext(CategoriesContext);
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -31,22 +34,55 @@ const Navigation = () => {
     navigate("/login", { replace: true });
   };
 
+  const onCategorySelectChangeHandler = async (env) => {
+    
+    try {
+      if(env.target.value != '0'){
+        console.log("value "+env.target.value);
+        const bo = await getBooksByCategories(env.target.value);
+        setFilteredBooks(bo);
+        setUpdate((prev) => prev + 1);
+      } else {
+        const bo = await getAllBooks(0);
+        setFilteredBooks([]);
+        console.log(bo.books);
+        setBooks(bo.books);
+        setUpdate((prev) => prev + 1);
+      }
+      
+    } catch (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    if(books && searchText != ''){
-      console.log("searchText = "+searchText);
+    if (books && searchText != "") {
+      console.log("searchText = " + searchText);
       const filter = books.filter((book) => {
         return book.name.toLowerCase().includes(searchText.toLowerCase());
       });
-  
+
       setFilteredBooks(filter);
       //setBooks(filter);
       setUpdate((prev) => prev + 1);
-    } else{
+    } else {
       //setBooks(books);
       //const bo = await getAllBooks(0);
       setFilteredBooks([]);
       setUpdate((prev) => prev + 1);
     }
+
+    const getData = async () => {
+      try {
+        const cat = await getAllCategories();
+        setCategories(cat);
+      } catch (error) {
+        console.error(error.message);
+        toast.error(error.message);
+      }
+    };
+    getData();
   }, [searchText, books]);
 
   return (
@@ -75,18 +111,19 @@ const Navigation = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
 
-            {/* <select
+            <select
               onChange={onCategorySelectChangeHandler}
               className="form-select categories-select"
               aria-label="Select boook category"
             >
               <option value="0">Select book category</option>
-              {categories.map && categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.title}
-                </option>
-              ))}
-            </select> */}
+              {categories.map &&
+                categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.title}
+                  </option>
+                ))}
+            </select>
           </div>
 
           <div className="navbar-nav ms-auto text-end gap-2">
